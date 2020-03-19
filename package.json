@@ -1,0 +1,23 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "Forkify project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tlcs1993/forkify.git"
+  },
+  "author": "Thiago Cruz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tlcs1993/forkify/issues"
+  },
+  "homepage": "https://github.com/tlcs1993/forkify#readme",
+  "devDependencies": {
+    "webpack": "^4.42.0"
+  },
+  "dependencies": {}
+}
