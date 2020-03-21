@@ -1,4 +1,13 @@
-// Global app controller
-const x = 23;
+import axios from 'axios';
 
-console.log(`The number declared is ${x}.`)
+async function getResults(query) {
+    try {
+        const res = await axios(`https://forkify-api.herokuapp.com/api/search?&q=${query}`);
+        const recipes = res.data.recipes;
+        console.log(recipes);
+    } catch (err) {
+        alert(err);
+    }
+}
+
+getResults('pizza');
