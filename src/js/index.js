@@ -38,7 +38,7 @@ const controlSearch = async () => {
 
 // Adiciona um 'event listener' no botão de 'submit'.
 elements.searchForm.addEventListener('submit', (e) => {
-    // Previne o comportamento padrão do elemento. Neste caso não vai permitir que a página recarregue para que a função a seguir possa ser executada.
+    // Previne o comportamento padrão do elemento. Neste caso não vai permitir que a página recarregue ao pressionar o botão 'submit' para que a função a seguir possa ser executada.
     e.preventDefault();
 
     // Chama a função que cuida da busca pelos resultados.
