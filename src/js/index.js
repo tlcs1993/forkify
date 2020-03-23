@@ -1,6 +1,6 @@
 import Search from './models/Search';
 import * as searchView from './views/searchView';
-import { elements } from './views/base';
+import { elements, renderLoader, clearLoader } from './views/base';
 
 /* Estado global da aplicação.
 
@@ -16,22 +16,28 @@ const state = {};
 
 // Função assíncrona que controla todas as etapas da busca pelos resultados.
 const controlSearch = async () => {
-    /* 1. Busca a 'query' a partir da 'view'. */
+    // 1. Busca a 'query' a partir da 'view'. 
     const query = searchView.getInput();
 
     // Caso a 'query' exista...
     if (query) {
-        // 2. Cria um novo objeto de busca e o adiciona ao objeto 'state'.
+        // 2. Cria um novo objeto de busca e o adiciona ao objeto 'state'. 
         state.search = new Search(query);
 
-        // 3. Prepara a interface de usuário (UI) para os resultados.
+        // 3. Prepara a interface de usuário (UI) para os resultados. 
         searchView.clearInput();
         searchView.clearResults();
 
-        // 4. Procura por receitas.
-        await state.search.getResults();
+        // Renderiza uma animação de carregamento.
+        renderLoader(elements.searchRes); 
 
-        // 5. Renderiza os resultados na interface de usuário (UI).
+        // 4. Procura por receitas. 
+        await state.search.getResults();
+        
+        // Remove a animação de carregamento.
+        clearLoader(); 
+
+        // 5. Renderiza os resultados na interface de usuário (UI). 
         searchView.renderResults(state.search.result);
     }
 }
