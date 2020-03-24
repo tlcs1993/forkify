@@ -50,3 +50,21 @@ elements.searchForm.addEventListener('submit', (e) => {
     // Chama a função que cuida da busca pelos resultados.
     controlSearch();
 });
+
+// Adiciona um 'event listener' para os botões de paginação.
+elements.searchResPages.addEventListener('click', (e) => {
+    // Usa delegação de eventos para escutar as ações no elemento.
+    const btn = e.target.closest('.btn-inline');
+
+    // Se o elemento correspondente ao conteúdo de 'btn' for clicado...
+    if (btn) {
+        // Converte para um inteiro de base 10 e guarda o valor do 'data attribute' na variável.
+        const goToPage = parseInt(btn.dataset.goto, 10);
+
+        // Limpa os resultados anteriores da 'view'.
+        searchView.clearResults();
+
+        // Renderiza os resultados referentes à página do botão clicado.
+        searchView.renderResults(state.search.result, goToPage);
+    }
+});

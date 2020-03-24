@@ -8,9 +8,10 @@ export const clearInput = () => {
     elements.searchInput.value = '';
 };
 
-// Função que limpa a lista de resultados.
+// Função que limpa a lista de resultados e botões de paginação.
 export const clearResults = () => {
     elements.searchResList.innerHTML = '';
+    elements.searchResPages.innerHTML = '';
 };
 
 // Função que recebe o título e um limite de caracteres (17 caracteres por padrão) retorna uma string com até limite máximo escolhido.
@@ -59,7 +60,50 @@ const renderRecipe = (recipe) => {
     elements.searchResList.insertAdjacentHTML('beforeend', markup);
 };
 
-// Renderiza todos os elementos do resultado da busca na 'view'.
-export const renderResults = (recipes) => {
-    recipes.forEach(renderRecipe);
+// Cria um botão de acordo com o seu tipo.
+const createButton = (page, type) => `
+    <button class="btn-inline results__btn--${type}" data-goto="${type === 'prev' ? page - 1 : page + 1}">
+        <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
+        <svg class="search__icon">
+            <use href="img/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right'}"></use>
+        </svg>
+    </button>
+`;
+
+// Renderiza os botões de paginação de acordo com a ocasião.
+const renderButtons = (page, numResults, resPerPage) => {
+    // Calcula o número de páginas e arredonda para cima caso o resultado não seja inteiro.
+    const pages = Math.ceil(numResults / resPerPage);
+
+    let button;
+
+    // Caso seja a primeira página e existam mais de uma página... 
+    if (page === 1 && pages > 1) {
+        button = createButton(page, 'next');
+    // Caso não seja nem a primeira nem a última página de várias...
+    } else if (page < pages) {
+        button = `
+            ${createButton(page, 'prev')}
+            ${createButton(page, 'next')}
+        `;
+    // Caso seja a última página de várias...
+    } else if (page === pages && pages > 1) {
+        button = createButton(page, 'prev');
+    } 
+
+    elements.searchResPages.insertAdjacentHTML('afterbegin', button);
+};
+
+// Renderiza os elementos do resultado da busca na 'view' levando em consideração a página e a quantidade máxima de elementos por página.
+export const renderResults = (recipes, page = 1, resPerPage = 10) => {
+    /* Renderiza os resultados da página atual */
+
+    const start = (page - 1) * resPerPage;
+    const end = page * resPerPage;
+
+    recipes.slice(start, end).forEach(renderRecipe);
+
+    /* Renderiza os botões da página */
+
+    renderButtons(page, recipes.length, resPerPage);
 };
