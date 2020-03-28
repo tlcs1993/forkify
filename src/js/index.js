@@ -1,4 +1,5 @@
 import Search from './models/Search';
+import Recipe from './models/Recipe';
 import * as searchView from './views/searchView';
 import { elements, renderLoader, clearLoader } from './views/base';
 
@@ -10,6 +11,8 @@ import { elements, renderLoader, clearLoader } from './views/base';
     * - Receitas curtidas
 
 */
+
+/***** CONTROLADOR DE BUSCAS *****/
 
 // Objeto que recebe todo o resultado de uma busca.
 const state = {};
@@ -68,3 +71,9 @@ elements.searchResPages.addEventListener('click', (e) => {
         searchView.renderResults(state.search.result, goToPage);
     }
 });
+
+/***** CONTROLADOR DE RECEITAS *****/
+
+const r = new Recipe(35236);
+r.getRecipe();
+console.log(r);
