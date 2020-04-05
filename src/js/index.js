@@ -32,16 +32,22 @@ const controlSearch = async () => {
         searchView.clearResults();
 
         // Renderiza uma animação de carregamento.
-        renderLoader(elements.searchRes); 
-
-        // 4. Procura por receitas. 
-        await state.search.getResults();
+        renderLoader(elements.searchRes);
         
-        // Remove a animação de carregamento.
-        clearLoader(); 
+        try {
+            // 4. Procura por receitas. 
+            await state.search.getResults();
+            
+            // Remove a animação de carregamento.
+            clearLoader(); 
+    
+            // 5. Renderiza os resultados na interface de usuário (UI). 
+            searchView.renderResults(state.search.result);
+        } catch (err) {
+            alert('Something went wrong with the search!');
+            clearLoader();
+        }
 
-        // 5. Renderiza os resultados na interface de usuário (UI). 
-        searchView.renderResults(state.search.result);
     }
 }
 
@@ -74,6 +80,35 @@ elements.searchResPages.addEventListener('click', (e) => {
 
 /***** CONTROLADOR DE RECEITAS *****/
 
-const r = new Recipe(35236);
-r.getRecipe();
-console.log(r);
+const controlRecipe = async () => {
+    // Retorna a parte do URL que segue após o 'hashtag', incluindo a própria 'hashtag'. Após isso substitui o 'hashtag' por um 'vazio' sobrando assim somente o ID.
+    const id = window.location.hash.replace('#', '');
+
+    console.log(id);
+
+    if (id) {
+        // 1. Prepara a interface de usuário para as mudanças.
+        
+        
+        // 2. Cria um novo objeto de receita.
+        state.recipe = new Recipe(id);
+
+        try {
+            // 3. Recebe os dados da receita.
+            await state.recipe.getRecipe();
+    
+            // 4. Calcula o tempo e o número de pessoas servidas.
+            state.recipe.calcTime();
+            state.recipe.calcServings();
+    
+            // 5. Renderiza a receita.
+            console.log(state.recipe);
+        } catch (err) {
+            alert('Error processing recipe!');
+        }
+
+    }
+}
+
+// Adiciona um 'event listener' para cada alteração do 'hash' no URL.
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
