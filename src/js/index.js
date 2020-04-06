@@ -82,7 +82,7 @@ elements.searchResPages.addEventListener('click', (e) => {
 
 const controlRecipe = async () => {
     // Retorna a parte do URL que segue após o 'hashtag', incluindo a própria 'hashtag'. Após isso substitui o 'hashtag' por um 'vazio' sobrando assim somente o ID.
-    const id = window.location.hash.replace('#', '');
+    const id = window.location.hash.replace('#', ' ');
 
     console.log(id);
 
