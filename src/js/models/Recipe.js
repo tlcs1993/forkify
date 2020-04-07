@@ -36,30 +36,31 @@ export default class Recipe {
     parseIngredients() {
         const unitsLong = ['tablespoon', 'tablespoons', 'ounce', 'ounces', 'teaspoon', 'teaspoons', 'cup', 'cups', 'pound', 'pounds'];
         const unitsShort = ['tbsp', 'tbsp', 'oz', 'oz', 'tsp', 'tsp', 'cup', 'cup', 'pound', 'pound'];
+        const units = [...unitsShort, 'kg', 'g'];
 
         const newIngredients = this.ingredients.map(el => {
 
-            /* 1. Padronizar as unidades. */
+            // 1. Padronizando as unidades.
 
             let ingredient = el.toLowerCase();
 
-            // FIXME: Para cada elemento (unit) de 'unitsLong' encontrado, o mesmo será substituído pelo elemento de índice igual do vetor 'unitsShort'. 
+            // Para cada elemento (unit) de 'unitsLong' encontrado, o mesmo será substituído pelo elemento de índice igual do vetor 'unitsShort'. 
             unitsLong.forEach((unit, i) => {
                 ingredient = ingredient.replace(unit, unitsShort[i]);
             })
 
-            /* 2. Remover os parênteses. */
+            // 2. Removendo os parênteses. 
 
             // Usa expressões regulares para remover parênteses e substituílos por um espaço.
             ingredient = ingredient.replace(/\s*\(.*?\)\s*/g, ' ');
 
-            /* 3. Faz o 'parsing' do ingrediente. */
+            // 3. Analizando e preparando o ingrediente. 
 
             // Cria um vetor a partir da 'string', separando cada elemento a partir de cada espaço em branco.
             const arrIng = ingredient.split(' ');
 
             // Encontra o índice do elemento se o mesmo existir dentro do vetor 'unitsShort'.
-            const unitIndex = arrIng.findIndex((el2 => unitsShort.includes(el2)));
+            const unitIndex = arrIng.findIndex((el2 => units.includes(el2)));
 
             let objIng;
 

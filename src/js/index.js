@@ -1,6 +1,7 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
 import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView';
 import { elements, renderLoader, clearLoader } from './views/base';
 
 /* Estado global da aplicação.
@@ -84,10 +85,15 @@ const controlRecipe = async () => {
     const id = window.location.hash.replace('#', ' ');
 
     console.log(id);
-
+    
     if (id) {
         // 1. Prepara a interface de usuário para as mudanças.
         
+        // Limpa a receita da 'view'.
+        recipeView.clearRecipe();
+
+        // Renderiza a animação de carregamento.
+        renderLoader(elements.recipe);
         
         // 2. Cria um novo objeto de receita.
         state.recipe = new Recipe(id);
@@ -104,7 +110,12 @@ const controlRecipe = async () => {
             state.recipe.calcServings();
     
             // 5. Renderiza a receita.
-            console.log(state.recipe);
+
+            // Remove a animação de carregamento.
+            clearLoader();
+
+            // Renderiza a receita na view.
+            recipeView.renderRecipe(state.recipe);
         } catch (err) {
             alert('Error processing recipe!');
         }
