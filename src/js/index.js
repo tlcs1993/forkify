@@ -47,7 +47,6 @@ const controlSearch = async () => {
             alert('Something went wrong with the search!');
             clearLoader();
         }
-
     }
 }
 
@@ -96,6 +95,9 @@ const controlRecipe = async () => {
         try {
             // 3. Recebe os dados da receita.
             await state.recipe.getRecipe();
+
+            // Analisa e traduz os ingredientes na forma de um objeto.
+            state.recipe.parseIngredients();
     
             // 4. Calcula o tempo e o número de pessoas servidas.
             state.recipe.calcTime();
@@ -106,7 +108,6 @@ const controlRecipe = async () => {
         } catch (err) {
             alert('Error processing recipe!');
         }
-
     }
 }
 

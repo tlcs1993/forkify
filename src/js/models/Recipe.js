@@ -50,12 +50,12 @@ export default class Recipe {
 
             /* 2. Remover os parênteses. */
 
-            // Usando expressões regulares para remover parênteses e substituílos por um espaço.
+            // Usa expressões regulares para remover parênteses e substituílos por um espaço.
             ingredient = ingredient.replace(/\s*\(.*?\)\s*/g, ' ');
 
-            /* 3. Faz o 'parse' do ingrediente em quantidade, unidade e ingredientes. */
+            /* 3. Faz o 'parsing' do ingrediente. */
 
-            // Separando o vetor a partir de cada espaço em branco.
+            // Cria um vetor a partir da 'string', separando cada elemento a partir de cada espaço em branco.
             const arrIng = ingredient.split(' ');
 
             // Encontra o índice do elemento se o mesmo existir dentro do vetor 'unitsShort'.
@@ -65,21 +65,27 @@ export default class Recipe {
 
             // Caso haja uma unidade...
             if (unitIndex > -1) {
+                // Guarda os valores do vetor da primeira posição até uma posição antes de encontrar alguma unidade de medida.
                 const arrCount = arrIng.slice(0, unitIndex);
 
                 let count; 
 
+                // Caso o comprimento do vetor com as unidades de medida seja igual a um...
                 if (arrCount.length === 1) {
                     count = eval(arrIng[0].replace('-', '+'));
                 } else {
+                    // Avalia a expressão, substitui o sinal de menos por um sinal de mais e guarda o resultado na variável. 
                     count = eval(arrIng.slice(0, unitIndex).join('+'));
                 }
 
+                // Cria o objeto do ingrediente.
                 objIng = {
                     count,
                     unit: arrIng[unitIndex],
+                    // Seleciona os elementos após a unidade e os une com espaços em branco.
                     ingredient: arrIng.slice(unitIndex + 1).join(' '),
                 }
+                
             // Caso não haja uma unidade mas o primeiro elemento da 'string' é um número (convertido para um inteiro de base 10)... 
             } else if (parseInt(arrIng[0], 10)) {
                 objIng = {
@@ -98,9 +104,11 @@ export default class Recipe {
                 }
             }
 
+            // Retorna um objeto de ingredientes.
             return objIng;
         });
 
+        // Recebe o novo valor dos ingredientes.
         this.ingredients = newIngredients;
     }
 }
